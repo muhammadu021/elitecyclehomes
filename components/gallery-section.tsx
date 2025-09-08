@@ -1,0 +1,271 @@
+"use client"
+
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Play, ImageIcon } from "lucide-react"
+
+interface GalleryItem {
+  id: string
+  type: "image" | "video" | "youtube"
+  src: string
+  thumbnail?: string
+  youtubeId?: string
+  title: string
+  description: string
+  date: string
+  size: "small" | "medium" | "large"
+}
+
+export function GallerySection() {
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null)
+
+  // Sample gallery data - in chronological order (newest first)
+  const galleryItems: GalleryItem[] = [
+    {
+      id: "1",
+      type: "youtube",
+      src: "/luxury-property-tour-video.png",
+      thumbnail: "/luxury-property-tour-video.png",
+      youtubeId: "dQw4w9WgXcQ", // Replace with your actual YouTube video ID
+      title: "Luxury Villa Tour",
+      description: "Take a virtual tour of our stunning Maitama villa with premium finishes",
+      date: "2024-01-15",
+      size: "large",
+    },
+    {
+      id: "2",
+      type: "image",
+      src: "/modern-kitchen.png",
+      title: "Modern Kitchen Design",
+      description: "State-of-the-art kitchen with premium appliances and marble countertops",
+      date: "2024-01-14",
+      size: "medium",
+    },
+    {
+      id: "3",
+      type: "image",
+      src: "/luxury-bathroom.png",
+      title: "Spa-like Bathroom",
+      description: "Luxurious bathroom with rainfall shower and premium fixtures",
+      date: "2024-01-13",
+      size: "small",
+    },
+    {
+      id: "4",
+      type: "youtube",
+      src: "/property-construction-progress.png",
+      thumbnail: "/property-construction-progress.png",
+      youtubeId: "dQw4w9WgXcQ", // Replace with your actual YouTube video ID
+      title: "Construction Progress",
+      description: "Latest updates on our Guzape development project",
+      date: "2024-01-12",
+      size: "large",
+    },
+    {
+      id: "5",
+      type: "image",
+      src: "/cozy-living-room.png",
+      title: "Elegant Living Space",
+      description: "Spacious living room with floor-to-ceiling windows and city views",
+      date: "2024-01-11",
+      size: "large",
+    },
+    {
+      id: "6",
+      type: "image",
+      src: "/outdoor-pool-area.png",
+      title: "Pool & Recreation",
+      description: "Resort-style pool area perfect for relaxation and entertainment",
+      date: "2024-01-10",
+      size: "small",
+    },
+    {
+      id: "7",
+      type: "youtube",
+      src: "/neighborhood-aerial-view.png",
+      thumbnail: "/neighborhood-aerial-view.png",
+      youtubeId: "dQw4w9WgXcQ", // Replace with your actual YouTube video ID
+      title: "Neighborhood Overview",
+      description: "Aerial view of the prestigious Asokoro neighborhood",
+      date: "2024-01-09",
+      size: "medium",
+    },
+    {
+      id: "8",
+      type: "image",
+      src: "/luxurious-master-bedroom.png",
+      title: "Master Suite",
+      description: "Luxurious master bedroom with walk-in closet and en-suite bathroom",
+      date: "2024-01-08",
+      size: "medium",
+    },
+    {
+      id: "9",
+      type: "image",
+      src: "/cozy-home-office.png",
+      title: "Home Office",
+      description: "Modern home office space perfect for remote work",
+      date: "2024-01-07",
+      size: "small",
+    },
+    {
+      id: "10",
+      type: "image",
+      src: "/modern-dining-room.png",
+      title: "Dining Area",
+      description: "Elegant dining space with contemporary furniture and lighting",
+      date: "2024-01-06",
+      size: "medium",
+    },
+    
+    
+  ]
+
+  // Show only first 12 items (3 rows in bento layout)
+  const displayedItems = galleryItems.slice(0, 12)
+
+  const getGridClass = (size: string, index: number) => {
+    // Mobile patterns (2 columns) - keep simple
+    const mobilePatterns = [
+      "col-span-2 row-span-2", // Large - spans full width
+      "col-span-1 row-span-1", // Small
+      "col-span-1 row-span-1", // Small
+      "col-span-2 row-span-2", // Large
+      "col-span-2 row-span-2", // Large
+      "col-span-2 row-span-1", // Wide
+      "col-span-1 row-span-1", // Small
+      "col-span-1 row-span-1", // Small
+      "col-span-1 row-span-1", // Small
+      "col-span-1 row-span-1", // Small
+      "col-span-1 row-span-1", // Small
+      "col-span-1 row-span-1", // Small
+    ]
+
+    // Desktop patterns - create perfect squares with 4x4 grid
+    const desktopPatterns = [
+      "col-span-2 row-span-2", // Large square (2x2)
+      "col-span-1 row-span-1", // Small square (1x1)
+      "col-span-1 row-span-1", // Small square (1x1)
+      "col-span-2 row-span-2", // Large square (2x2)
+      "col-span-2 row-span-2", // Large square (2x2)
+      "col-span-2 row-span-1", // Wide rectangle (2x1)
+      "col-span-1 row-span-1", // Small square (1x1)
+      "col-span-1 row-span-1", // Small square (1x1)
+      "col-span-1 row-span-1", // Small square (1x1)
+      "col-span-1 row-span-1", // Small square (1x1)
+      "col-span-1 row-span-1", // Small square (1x1)
+      "col-span-1 row-span-1", // Small square (1x1)
+    ]
+
+    // Use mobile patterns for small screens, desktop patterns for larger screens
+    return `${mobilePatterns[index] || "col-span-1 row-span-1"} lg:${desktopPatterns[index] || "col-span-1 row-span-1"}`
+  }
+
+  return (
+    <section id="gallery" className="py-12 bg-muted/30 scroll-mt-20 sm:py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4">Property Gallery</h2>
+          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
+            Explore our latest properties and developments through photos and virtual tours
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 auto-rows-[120px] sm:auto-rows-[150px] lg:auto-rows-[200px] xl:auto-rows-[220px] mb-8 max-w-4xl lg:max-w-6xl xl:max-w-7xl mx-auto">
+          {displayedItems.map((item, index) => (
+            <div
+              key={item.id}
+              className={`relative group overflow-hidden rounded-xl border-2 border-black bg-card transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer ${getGridClass(item.size, index)}`}
+              onMouseEnter={() => setHoveredItem(item.id)}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
+              {/* Media Content */}
+              <div className="relative w-full h-full">
+                {item.type === "youtube" ? (
+                  <>
+                    <img 
+                      src={item.thumbnail || `https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`} 
+                      alt={item.title} 
+                      className="w-full h-full object-cover" 
+                      loading="lazy"
+                    />
+                    {hoveredItem === item.id && (
+                      <iframe
+                        src={`https://www.youtube.com/embed/${item.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${item.youtubeId}&controls=0&showinfo=0&rel=0&modestbranding=1`}
+                        className="absolute inset-0 w-full h-full"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        title={item.title}
+                      />
+                    )}
+                    <div className="absolute top-2 sm:top-4 right-2 sm:right-4 bg-red-600 rounded-full p-1.5 sm:p-2">
+                      <Play className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+                    </div>
+                  </>
+                ) : item.type === "video" ? (
+                  <>
+                    <img 
+                      src={item.thumbnail || item.src} 
+                      alt={item.title} 
+                      className="w-full h-full object-cover" 
+                      loading="lazy"
+                    />
+                    {hoveredItem === item.id && (
+                      <video
+                        src={item.src}
+                        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="none"
+                      />
+                    )}
+                    <div className="absolute top-2 sm:top-4 right-2 sm:right-4 bg-black/50 rounded-full p-1.5 sm:p-2">
+                      <Play className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <img 
+                      src={item.src || "/placeholder.svg"} 
+                      alt={item.title} 
+                      className="w-full h-full object-cover" 
+                      loading="lazy"
+                    />
+                  </>
+                )}
+
+                {/* Title & Description Overlay */}
+                <div className="absolute inset-x-0 bottom-0 p-2 sm:p-3">
+                  <div
+                    className={`bg-black/50 backdrop-blur-sm rounded-md p-2 sm:p-3 transition-opacity duration-300 
+                    opacity-100 lg:opacity-0 lg:group-hover:opacity-100`}
+                  >
+                    <h3 className="text-white text-xs sm:text-sm font-semibold leading-tight line-clamp-1">
+                      {item.title}
+                    </h3>
+                    <p className="text-white/90 text-[10px] sm:text-xs mt-1 leading-snug line-clamp-2">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* View Full Gallery Button */}
+        <div className="text-center">
+          <Button
+            size="lg"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-full transition-all duration-300 hover:scale-105"
+          >
+            View Full Gallery
+          </Button>
+        </div>
+      </div>
+    </section>
+  )
+}
