@@ -236,20 +236,6 @@ export function GallerySection() {
                   </>
                 )}
 
-                {/* Title & Description Overlay */}
-                <div className="absolute inset-x-0 bottom-0 p-2 sm:p-3">
-                  <div
-                    className={`bg-black/30 backdrop-blur-sm rounded-md p-2 sm:p-3 transition-opacity duration-300 
-                    opacity-100 lg:opacity-0 lg:group-hover:opacity-100`}
-                  >
-                    <h3 className="text-white text-xs sm:text-sm font-semibold leading-tight line-clamp-1">
-                      {item.title}
-                    </h3>
-                    <p className="text-white/90 text-[10px] sm:text-xs mt-1 leading-snug line-clamp-2">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
               </div>
             </div>
           ))}
