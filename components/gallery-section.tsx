@@ -7,10 +7,9 @@ import Link from "next/link"
 
 interface GalleryItem {
   id: string
-  type: "image" | "video" | "youtube"
+  type: "image" | "video"
   src: string
   thumbnail?: string
-  youtubeId?: string
   title: string
   description: string
   date: string
@@ -24,10 +23,9 @@ export function GallerySection() {
   const galleryItems: GalleryItem[] = [
     {
       id: "1",
-      type: "youtube",
-      src: "/luxury-property-tour-video.png",
+      type: "video",
+      src: "/vid1.mp4",
       thumbnail: "/luxury-property-tour-video.png",
-      youtubeId: "dQw4w9WgXcQ", // Replace with your actual YouTube video ID
       title: "Luxury Villa Tour",
       description: "Take a virtual tour of our stunning Maitama villa with premium finishes",
       date: "2024-01-15",
@@ -53,10 +51,9 @@ export function GallerySection() {
     },
     {
       id: "4",
-      type: "youtube",
-      src: "/property-construction-progress.png",
+      type: "video",
+      src: "/karsana.mp4",
       thumbnail: "/property-construction-progress.png",
-      youtubeId: "dQw4w9WgXcQ", // Replace with your actual YouTube video ID
       title: "Construction Progress",
       description: "Latest updates on our Guzape development project",
       date: "2024-01-12",
@@ -82,10 +79,9 @@ export function GallerySection() {
     },
     {
       id: "7",
-      type: "image",
-      src: "/neighborhood-aerial-view.png",
+      type: "video",
+      src: "/katampeext.mp4",
       thumbnail: "/neighborhood-aerial-view.png",
-      youtubeId: "dQw4w9WgXcQ", // Replace with your actual YouTube video ID
       title: "Neighborhood Overview",
       description: "Aerial view of the prestigious Asokoro neighborhood",
       date: "2024-01-09",
@@ -181,29 +177,7 @@ export function GallerySection() {
             >
               {/* Media Content */}
               <div className="relative w-full h-full">
-                {item.type === "youtube" ? (
-                  <>
-                    <img 
-                      src={item.thumbnail || `https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`} 
-                      alt={item.title} 
-                      className="w-full h-full object-cover" 
-                      loading="lazy"
-                    />
-                    {hoveredItem === item.id && (
-                      <iframe
-                        src={`https://www.youtube.com/embed/${item.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${item.youtubeId}&controls=0&showinfo=0&rel=0&modestbranding=1`}
-                        className="absolute inset-0 w-full h-full"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        title={item.title}
-                      />
-                    )}
-                    <div className="absolute top-2 sm:top-4 right-2 sm:right-4 bg-red-600 rounded-full p-1.5 sm:p-2">
-                      <Play className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
-                    </div>
-                  </>
-                ) : item.type === "video" ? (
+                {item.type === "video" ? (
                   <>
                     <img 
                       src={item.thumbnail || item.src} 
@@ -236,7 +210,6 @@ export function GallerySection() {
                     />
                   </>
                 )}
-
               </div>
             </div>
           ))}
