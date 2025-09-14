@@ -20,7 +20,7 @@ export default function Home() {
       
       {/* WhatsApp Widget */}
       <WhatsAppWidget 
-        phoneNumber="2349132757701" 
+        phoneNumber="2348074252826" 
         message="Hello! I'm interested in your properties. Can you help me?"
         companyName="Elite Cycle Homes"
       />
