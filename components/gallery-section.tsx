@@ -35,7 +35,7 @@ export function GallerySection() {
     {
       id: "2",
       type: "image",
-      src: "/modern-kitchen.png",
+      src: "/7.jpg",
       title: "Modern Kitchen Design",
       description: "State-of-the-art kitchen with premium appliances and marble countertops",
       date: "2024-01-14",
@@ -44,7 +44,7 @@ export function GallerySection() {
     {
       id: "3",
       type: "image",
-      src: "/luxury-bathroom.png",
+      src: "/8.jpg",
       title: "Spa-like Bathroom",
       description: "Luxurious bathroom with rainfall shower and premium fixtures",
       date: "2024-01-13",
@@ -64,7 +64,7 @@ export function GallerySection() {
     {
       id: "5",
       type: "image",
-      src: "/cozy-living-room.png",
+      src: "/9.jpg",
       title: "Elegant Living Space",
       description: "Spacious living room with floor-to-ceiling windows and city views",
       date: "2024-01-11",
@@ -73,15 +73,15 @@ export function GallerySection() {
     {
       id: "6",
       type: "image",
-      src: "/outdoor-pool-area.png",
-      title: "Pool & Recreation",
-      description: "Resort-style pool area perfect for relaxation and entertainment",
+      src: "/10.jpg",
+      title: "Fully detached",
+      description: "Spacious Fully Detached Homes offering privacy and premium comfort",
       date: "2024-01-10",
       size: "small",
     },
     {
       id: "7",
-      type: "youtube",
+      type: "image",
       src: "/neighborhood-aerial-view.png",
       thumbnail: "/neighborhood-aerial-view.png",
       youtubeId: "dQw4w9WgXcQ", // Replace with your actual YouTube video ID
@@ -93,7 +93,7 @@ export function GallerySection() {
     {
       id: "8",
       type: "image",
-      src: "/luxurious-master-bedroom.png",
+      src: "/11.jpg",
       title: "Master Suite",
       description: "Luxurious master bedroom with walk-in closet and en-suite bathroom",
       date: "2024-01-08",
@@ -102,22 +102,21 @@ export function GallerySection() {
     {
       id: "9",
       type: "image",
-      src: "/cozy-home-office.png",
-      title: "Home Office",
-      description: "Modern home office space perfect for remote work",
+      src: "/12.jpg",
+      title: "Terrace",
+      description: "Modern Terrace Homes designed for comfort, style, and secure family living in a serene neighborhood.",
       date: "2024-01-07",
       size: "small",
     },
     {
       id: "10",
       type: "image",
-      src: "/modern-dining-room.png",
+      src: "/13.jpg",
       title: "Dining Area",
       description: "Elegant dining space with contemporary furniture and lighting",
       date: "2024-01-06",
       size: "medium",
     },
-    
     
   ]
 
@@ -240,7 +239,7 @@ export function GallerySection() {
                 {/* Title & Description Overlay */}
                 <div className="absolute inset-x-0 bottom-0 p-2 sm:p-3">
                   <div
-                    className={`bg-black/50 backdrop-blur-sm rounded-md p-2 sm:p-3 transition-opacity duration-300 
+                    className={`bg-black/30 backdrop-blur-sm rounded-md p-2 sm:p-3 transition-opacity duration-300 
                     opacity-100 lg:opacity-0 lg:group-hover:opacity-100`}
                   >
                     <h3 className="text-white text-xs sm:text-sm font-semibold leading-tight line-clamp-1">

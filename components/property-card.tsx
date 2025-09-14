@@ -1,11 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { PillButton } from "./pill-button"
 import { Bed, Bath, Square } from "lucide-react"
 
 interface PropertyCardProps {
   name: string
-  price: string
   bedrooms: number
   bathrooms: number
   sqft: string
@@ -15,7 +13,6 @@ interface PropertyCardProps {
 
 export function PropertyCard({
   name,
-  price,
   bedrooms,
   bathrooms,
   sqft,
@@ -35,36 +32,18 @@ export function PropertyCard({
           className="w-full h-full object-cover object-center transition-transform duration-500 sm:group-hover:scale-110"
         />
       </div>
-      <CardContent className="p-3 sm:p-4 space-y-3 flex-1 flex flex-col">
-        <div className="flex justify-between items-start gap-2">
+      <CardContent className="p-2 sm:p-3 space-y-2 flex-1 flex flex-col items-center text-center">
+        <div className="w-full">
           <h3 className="text-base sm:text-lg font-semibold text-foreground capitalize group-hover:text-primary transition-colors duration-300 leading-tight">
             {name}
           </h3>
-          <Badge
-            variant="secondary"
-            className="text-xs sm:text-sm font-bold bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all duration-300 flex-shrink-0"
-          >
-            {price}
-          </Badge>
         </div>
 
-        <div className="flex flex-wrap gap-3 sm:gap-4 text-muted-foreground text-sm">
-          
-
-          
-
-          <div className="flex items-center gap-1 group-hover:text-primary transition-colors duration-300">
-            <Square className="w-3 h-3 sm:w-4 sm:h-4" />
-            <span>{sqft} sqft</span>
-          </div>
+        <div className="flex justify-center items-center gap-1 text-muted-foreground text-sm group-hover:text-primary transition-colors duration-300">
+          <Square className="w-3 h-3 sm:w-4 sm:h-4" />
+          <span>{sqft} sqft</span>
         </div>
 
-        <PillButton
-          variant="primary"
-          className="w-full sm:group-hover:scale-105 transition-transform duration-300 mt-auto text-sm sm:text-base"
-        >
-          View Details
-        </PillButton>
       </CardContent>
     </Card>
   )
