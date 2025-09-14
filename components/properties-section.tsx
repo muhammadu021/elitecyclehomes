@@ -31,7 +31,7 @@ export function PropertiesSection() {
       bedrooms: 4,
       bathrooms: 5,
       sqft: "3,800",
-      image: "/4.jpg",
+      image: "/16.jpg",
       borderColor: "border-blue-500",
     },
     {
@@ -39,7 +39,7 @@ export function PropertiesSection() {
       bedrooms: 6,
       bathrooms: 7,
       sqft: "6,000",
-      image: "/5.jpg",
+      image: "/17.jpg",
       borderColor: "border-teal-500",
     },
     {
@@ -47,7 +47,7 @@ export function PropertiesSection() {
       bedrooms: 3,
       bathrooms: 4,
       sqft: "2,500",
-      image: "/6.jpg",
+      image: "/Terraces.jpg",
       borderColor: "border-red-500",
     },
   ]
