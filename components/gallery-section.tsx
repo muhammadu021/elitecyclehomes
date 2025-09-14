@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Play, ImageIcon } from "lucide-react"
+import Link from "next/link"
 
 interface GalleryItem {
   id: string
@@ -243,12 +244,14 @@ export function GallerySection() {
 
         {/* View Full Gallery Button */}
         <div className="text-center">
-          <Button
-            size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-full transition-all duration-300 hover:scale-105"
-          >
-            View Full Gallery
-          </Button>
+          <Link href="/gallery">
+            <Button
+              size="lg"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-full transition-all duration-300 hover:scale-105"
+            >
+              View Full Gallery
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
