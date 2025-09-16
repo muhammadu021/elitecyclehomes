@@ -1,8 +1,9 @@
 "use client"
 
 import { Badge } from "@/components/ui/badge"
-import { Shield, Users, Award } from "lucide-react"
+import { Shield, Users, Award, Eye, Rocket } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
+import { motion } from "framer-motion"
 
 export function FeaturesSection() {
   const features = [
@@ -117,23 +118,106 @@ export function FeaturesSection() {
             </p>
 
             <div className="grid md:grid-cols-2 gap-8 mt-12">
-              <div className="bg-card rounded-xl p-8 border border-black shadow-sm">
-                <h3 className="text-xl font-semibold text-foreground mb-4">Our Vision</h3>
-                <p className="text-muted-foreground leading-relaxed">
+              <motion.div 
+                className="bg-card rounded-xl p-8 border-2 border-black shadow-sm hover:shadow-lg relative overflow-hidden will-change-transform backface-visibility-hidden"
+                style={{
+                  '--tw-shadow': '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+                  '--tw-shadow-hover': '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)'
+                } as React.CSSProperties}
+                whileHover={{
+                  y: -4,
+                  boxShadow: 'var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow-hover)'
+                }}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ 
+                  opacity: 1, 
+                  y: 0,
+                  transition: { 
+                    type: 'spring',
+                    stiffness: 100,
+                    damping: 15
+                  }
+                }}
+                viewport={{ once: true, margin: '-20%' }}
+                transition={{
+                  duration: 0.4,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out" />
+                <div className="flex flex-col items-center mb-6">
+                  <div className="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mb-4">
+                    <Eye className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-200 ease-out">
+                    Our Vision
+                  </h3>
+                </div>
+                <p className="text-muted-foreground leading-relaxed group-hover:text-foreground/90 transition-colors duration-200 ease-out">
                   To become one of Nigeria's most trusted and innovative real estate companies, recognized for creating
                   sustainable communities, driving profitable investment opportunities, and redefining property
                   ownership across Africa.
                 </p>
-              </div>
+                <motion.div 
+                  className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-primary transform -translate-x-1/2"
+                  whileHover={{ width: '80%' }}
+                  transition={{ 
+                    duration: 0.4,
+                    ease: [0.16, 1, 0.3, 1]
+                  }}
+                />
+              </motion.div>
 
-              <div className="bg-card rounded-xl p-8 border border-black shadow-sm">
-                <h3 className="text-xl font-semibold text-foreground mb-4">Our Mission</h3>
-                <p className="text-muted-foreground leading-relaxed">
+              <motion.div 
+                className="bg-card rounded-xl p-8 border-2 border-black shadow-sm hover:shadow-lg relative overflow-hidden will-change-transform backface-visibility-hidden"
+                style={{
+                  '--tw-shadow': '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+                  '--tw-shadow-hover': '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)'
+                } as React.CSSProperties}
+                whileHover={{
+                  y: -4,
+                  boxShadow: 'var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow-hover)'
+                }}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ 
+                  opacity: 1, 
+                  y: 0,
+                  transition: { 
+                    type: 'spring',
+                    stiffness: 100,
+                    damping: 15,
+                    delay: 0.1
+                  }
+                }}
+                viewport={{ once: true, margin: '-20%' }}
+                transition={{
+                  duration: 0.4,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out" />
+                <div className="flex flex-col items-center mb-6">
+                  <div className="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mb-4">
+                    <Rocket className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-200 ease-out">
+                    Our Mission
+                  </h3>
+                </div>
+                <p className="text-muted-foreground leading-relaxed group-hover:text-foreground/90 transition-colors duration-200 ease-out">
                   To provide secure, transparent, and high-value real estate solutions through land acquisition, estate
                   development, and investment opportunities, while ensuring affordability, innovation, and long-term
                   growth for our clients, investors, and communities.
                 </p>
-              </div>
+                <motion.div 
+                  className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-primary transform -translate-x-1/2"
+                  whileHover={{ width: '80%' }}
+                  transition={{ 
+                    duration: 0.4,
+                    ease: [0.16, 1, 0.3, 1]
+                  }}
+                />
+              </motion.div>
             </div>
           </div>
         </div>
@@ -151,16 +235,77 @@ export function FeaturesSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <div
+            <motion.div
               key={index}
-              className="bg-card rounded-xl p-8 text-center group border border-black shadow-sm hover:shadow-md transition-all duration-300"
+              className="bg-card rounded-xl p-8 text-center group border-2 border-black shadow-sm hover:shadow-lg relative overflow-hidden will-change-transform backface-visibility-hidden"
+              style={{
+                '--tw-shadow': '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+                '--tw-shadow-hover': '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)'
+              } as React.CSSProperties}
+              whileHover={{
+                y: -4,
+                boxShadow: 'var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow-hover)'
+              }}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ 
+                opacity: 1, 
+                y: 0,
+                transition: { 
+                  type: 'spring',
+                  stiffness: 100,
+                  damping: 15,
+                  delay: index * 0.1
+                }
+              }}
+              viewport={{ once: true, margin: '-20%' }}
+              transition={{
+                duration: 0.4,
+                ease: [0.16, 1, 0.3, 1],
+              }}
             >
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-full mb-6 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+              {/* Subtle background highlight on hover */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out" />
+              
+              {/* Icon with subtle scale and color transition */}
+              <motion.div 
+                className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 text-primary rounded-full mb-6 mx-auto"
+                whileHover={{ 
+                  scale: 1.1,
+                  backgroundColor: 'hsl(222.2, 47.4%, 11.2%)',
+                  color: 'white'
+                }}
+                transition={{ 
+                  type: 'spring',
+                  stiffness: 400,
+                  damping: 10,
+                  ease: [0.16, 1, 0.3, 1]
+                }}
+              >
                 {feature.icon}
-              </div>
-              <h3 className="text-xl font-semibold text-foreground mb-4">{feature.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
-            </div>
+              </motion.div>
+              
+              <motion.h3 
+                className="text-xl font-semibold text-foreground mb-4 group-hover:text-primary transition-colors duration-200 ease-out"
+              >
+                {feature.title}
+              </motion.h3>
+              
+              <motion.p 
+                className="text-muted-foreground leading-relaxed group-hover:text-foreground/90 transition-colors duration-200 ease-out"
+              >
+                {feature.description}
+              </motion.p>
+              
+              {/* Subtle bottom border animation */}
+              <motion.div 
+                className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-primary transform -translate-x-1/2"
+                whileHover={{ width: '80%' }}
+                transition={{ 
+                  duration: 0.4,
+                  ease: [0.16, 1, 0.3, 1]
+                }}
+              />
+            </motion.div>
           ))}
         </div>
 

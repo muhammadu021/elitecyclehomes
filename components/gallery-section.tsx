@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Play, ImageIcon } from "lucide-react"
+import { Play, ImageIcon, X } from "lucide-react"
 import Link from "next/link"
 
 interface GalleryItem {
@@ -17,7 +17,57 @@ interface GalleryItem {
 }
 
 export function GallerySection() {
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null)
+  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  const handleItemClick = (item: GalleryItem) => {
+    setSelectedItem(item)
+  }
+
+  const closeModal = () => {
+    if (videoRef.current) {
+      videoRef.current.pause()
+    }
+    setSelectedItem(null)
+  }
+
+  // Close modal when clicking outside content or pressing Escape
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && selectedItem) {
+        closeModal()
+      }
+    }
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      if (selectedItem && !target.closest('.modal-content')) {
+        closeModal()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('mousedown', handleClickOutside)
+    
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [selectedItem])
+
+  // When modal opens with a video, try to autoplay with sound (user gesture from click)
+  useEffect(() => {
+    if (selectedItem?.type === 'video' && videoRef.current) {
+      const v = videoRef.current
+      v.muted = false
+      const p = v.play?.()
+      if (p && typeof p.then === 'function') {
+        p.catch(() => {
+          // If blocked, user can press play
+        })
+      }
+    }
+  }, [selectedItem])
 
   // Sample gallery data - in chronological order (newest first)
   const galleryItems: GalleryItem[] = [
@@ -172,44 +222,41 @@ export function GallerySection() {
             <div
               key={item.id}
               className={`relative group overflow-hidden rounded-xl border-2 border-black bg-card transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer ${getGridClass(item.size, index)}`}
-              onMouseEnter={() => setHoveredItem(item.id)}
-              onMouseLeave={() => setHoveredItem(null)}
+              onClick={() => handleItemClick(item)}
             >
-              {/* Media Content */}
+              {/* Media Content with Play Button Overlay */}
               <div className="relative w-full h-full">
                 {item.type === "video" ? (
-                  <>
+                  <div className="w-full h-full">
                     <img 
                       src={item.thumbnail || item.src} 
                       alt={item.title} 
                       className="w-full h-full object-cover" 
                       loading="lazy"
                     />
-                    {hoveredItem === item.id && (
-                      <video
-                        src={item.src}
-                        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100"
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        preload="none"
-                      />
-                    )}
-                    <div className="absolute top-2 sm:top-4 right-2 sm:right-4 bg-black/50 rounded-full p-1.5 sm:p-2">
-                      <Play className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                      <div className="bg-black/60 hover:bg-black/70 rounded-full p-3 sm:p-4 transition-all duration-200">
+                        <Play className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                      </div>
                     </div>
-                  </>
+                  </div>
                 ) : (
-                  <>
-                    <img 
-                      src={item.src || "/placeholder.svg"} 
-                      alt={item.title} 
-                      className="w-full h-full object-cover" 
-                      loading="lazy"
-                    />
-                  </>
+                  <img 
+                    src={item.src || "/placeholder.svg"} 
+                    alt={item.title} 
+                    className="w-full h-full object-cover" 
+                    loading="lazy"
+                  />
                 )}
+                
+                {/* Title and Description Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-2 sm:p-3 md:p-4">
+                  <h3 className="font-medium text-xs sm:text-sm md:text-base text-white">{item.title}</h3>
+                  {/* Hide description on mobile, show on hover for desktop */}
+                  <p className="hidden md:block text-xs sm:text-sm text-white/80 mt-1 line-clamp-2">
+                    {item.description}
+                  </p>
+                </div>
               </div>
             </div>
           ))}
@@ -227,6 +274,52 @@ export function GallerySection() {
           </Link>
         </div>
       </div>
+
+      {/* Modal for Full View */}
+      {selectedItem && (
+        <div className="fixed inset-0 bg-gray-200/60 backdrop-blur-sm z-50 flex items-start justify-center p-4 pt-16 sm:pt-20">
+          <button 
+            onClick={closeModal}
+            className="absolute top-6 right-6 z-50 w-12 h-12 flex items-center justify-center bg-black/50 rounded-full text-white hover:bg-black/70 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
+            aria-label="Close"
+          >
+            <X className="w-8 h-8" />
+          </button>
+          
+          <div className="modal-content max-w-4xl w-full max-h-[90vh] bg-transparent">
+            {selectedItem.type === 'video' ? (
+              <div className="relative w-full max-h-[80vh] flex items-center justify-center">
+                <div className="rounded-3xl overflow-hidden shadow-2xl ring-1 ring-black/10">
+                  <video
+                    ref={videoRef}
+                    src={selectedItem.src}
+                    className="no-controls block w-full h-auto max-h-[80vh] object-contain rounded-3xl"
+                    playsInline
+                    autoPlay
+                    muted={false}
+                    preload="metadata"
+                    loop
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="relative w-full max-h-[80vh] flex items-center justify-center">
+                <div className="rounded-3xl overflow-hidden shadow-2xl ring-1 ring-black/10">
+                  <img 
+                    src={selectedItem.src} 
+                    alt={selectedItem.title}
+                    className="block w-full h-auto max-h-[80vh] object-contain rounded-3xl"
+                  />
+                </div>
+              </div>
+            )}
+            <div className="mt-4 text-center text-white px-4 pb-4">
+              <h2 className="text-lg sm:text-xl font-semibold">{selectedItem.title}</h2>
+              <p className="text-sm sm:text-base text-gray-300 mt-2">{selectedItem.description}</p>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

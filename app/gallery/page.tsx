@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Play, ArrowLeft } from "lucide-react"
 import Link from "next/link"
@@ -18,6 +18,74 @@ interface GalleryItem {
 
 export default function GalleryPage() {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
+  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  const handleItemClick = (item: GalleryItem) => {
+    setSelectedItem(item)
+  }
+
+  // Handle modal close with cleanup
+  const closeModal = () => {
+    // Pause video if it's playing
+    if (videoRef.current) {
+      videoRef.current.pause()
+      videoRef.current.currentTime = 0
+    }
+    setSelectedItem(null)
+    // Re-enable body scroll
+    document.body.style.overflow = 'auto'
+  }
+
+  // Handle modal state and event listeners
+  useEffect(() => {
+    if (!selectedItem) return
+
+    // Disable body scroll when modal is open
+    document.body.style.overflow = 'hidden'
+
+    // Handle click outside
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as HTMLElement
+      if (selectedItem && !target.closest('.modal-content')) {
+        closeModal()
+      }
+    }
+
+    // Handle escape key
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && selectedItem) {
+        closeModal()
+      }
+    }
+
+    // Add event listeners
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('touchstart', handleClickOutside, { passive: true })
+    document.addEventListener('keydown', handleEscape)
+
+    // Cleanup
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('touchstart', handleClickOutside)
+      document.removeEventListener('keydown', handleEscape)
+      document.body.style.overflow = 'auto'
+    }
+  }, [selectedItem, closeModal])
+
+  // When modal opens with a video, try to autoplay with sound (user gesture from click)
+  useEffect(() => {
+    if (selectedItem?.type === 'video' && videoRef.current) {
+      const v = videoRef.current
+      v.muted = false
+      const p = v.play?.()
+      if (p && typeof p.then === 'function') {
+        p.catch(() => {
+          // If autoplay with sound is blocked, do nothing; user can press play
+        })
+      }
+    }
+  }, [selectedItem])
 
   // Complete gallery data - doubled content (24 items total)
   const galleryItems: GalleryItem[] = [
@@ -309,82 +377,132 @@ export default function GalleryPage() {
 
   return (
     <main className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <Link 
-              href="/"
-              className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors duration-200"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              <span className="font-medium">Back to Home</span>
+      {/* Updated Header to match main site */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-black/20 backdrop-blur-sm border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Back Button */}
+            <Link href="/" className="flex items-center space-x-2 text-white/90 hover:text-white transition-colors duration-200">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span className="font-medium"></span>
             </Link>
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Property Gallery</h1>
-            <div className="w-20"></div> {/* Spacer for centering */}
+            
+            {/* Page Title */}
+            <h1 className="text-xl font-medium text-white">Property Gallery</h1>
+            
+            {/* Spacer to center the title */}
+            <div className="w-[136px]"></div>
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* Gallery Content */}
-      <section className="py-12 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4">Complete Property Gallery</h2>
-            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
-              Explore our complete collection of premium properties and developments
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 auto-rows-[120px] sm:auto-rows-[150px] lg:auto-rows-[200px] xl:auto-rows-[220px] mb-8 max-w-4xl lg:max-w-6xl xl:max-w-7xl mx-auto">
-            {galleryItems.map((item, index) => (
-              <div
-                key={item.id}
-                className={`relative group overflow-hidden rounded-xl border-2 border-black bg-card transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer ${getGridClass(item.size, index)}`}
-                onMouseEnter={() => setHoveredItem(item.id)}
-                onMouseLeave={() => setHoveredItem(null)}
-              >
-                {/* Media Content */}
-                <div className="relative w-full h-full">
-                  {item.type === "video" ? (
-                    <>
-                      <img 
-                        src={item.thumbnail || item.src} 
-                        alt={item.title} 
-                        className="w-full h-full object-cover" 
-                        loading="lazy"
-                      />
-                      {hoveredItem === item.id && (
-                        <video
-                          src={item.src}
-                          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100"
-                          autoPlay
-                          muted
-                          loop
-                          playsInline
-                          preload="none"
+      {/* Add padding to account for fixed header */}
+      <div className="pt-16">
+        {/* Gallery Content */}
+        <section className="py-12 bg-muted/30">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 auto-rows-[120px] sm:auto-rows-[150px] lg:auto-rows-[200px] xl:auto-rows-[220px] mb-8 max-w-4xl lg:max-w-6xl xl:max-w-7xl mx-auto">
+              {galleryItems.map((item, index) => (
+                <div
+                  key={item.id}
+                  className={`relative group overflow-hidden rounded-xl border-2 border-black bg-card transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer ${getGridClass(item.size, index)}`}
+                  onMouseEnter={() => setHoveredItem(item.id)}
+                  onMouseLeave={() => setHoveredItem(null)}
+                  onClick={() => handleItemClick(item)}
+                >
+                  {/* Media Content */}
+                  <div className="relative w-full h-full">
+                    {item.type === "video" ? (
+                      <>
+                        <img 
+                          src={item.thumbnail || item.src} 
+                          alt={item.title} 
+                          className="w-full h-full object-cover" 
+                          loading="lazy"
                         />
-                      )}
-                      <div className="absolute top-2 sm:top-4 right-2 sm:right-4 bg-black/50 rounded-full p-1.5 sm:p-2">
-                        <Play className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
-                      </div>
-                    </>
-                  ) : (
-                    <>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="bg-black/50 rounded-full p-3 sm:p-4">
+                            <Play className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                          </div>
+                        </div>
+                      </>
+                    ) : (
                       <img 
                         src={item.src || "/placeholder.svg"} 
                         alt={item.title} 
-                        className="w-full h-full object-cover" 
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
                         loading="lazy"
                       />
-                    </>
-                  )}
+                    )}
+                    
+                    {/* Hover Overlay - Title only on mobile, full description on hover (desktop) */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-2 sm:p-3 md:p-4">
+                      <h3 className="font-medium text-xs sm:text-sm md:text-base text-white">{item.title}</h3>
+                      {/* Hide description on mobile, show on hover for desktop */}
+                      <p className="hidden md:block text-xs sm:text-sm text-white/80 mt-1 line-clamp-2">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Modal for Full View */}
+        {selectedItem && (
+          <div className="fixed inset-0 bg-gray-200/60 backdrop-blur-sm z-50 flex items-start justify-center p-4 pt-16 sm:pt-20">
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation()
+                  closeModal()
+                }}
+                className="absolute top-6 right-6 z-50 w-12 h-12 flex items-center justify-center bg-black/50 rounded-full text-white hover:bg-black/70 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
+                aria-label="Close"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            
+            <div className="modal-content max-w-4xl w-full max-h-[90vh] bg-transparent">
+              {selectedItem.type === 'video' ? (
+                <div className="relative w-full max-h-[80vh] flex items-center justify-center">
+                  <div className="rounded-3xl overflow-hidden shadow-2xl ring-1 ring-black/10">
+                    <video
+                      ref={videoRef}
+                      src={selectedItem.src}
+                      className="no-controls block w-full h-auto max-h-[80vh] object-contain rounded-3xl"
+                      playsInline
+                      autoPlay
+                      muted={false}
+                      preload="metadata"
+                      loop
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="relative w-full max-h-[80vh] flex items-center justify-center">
+                  <div className="rounded-3xl overflow-hidden ring-1 ring-black/10 shadow-2xl">
+                    <img 
+                      src={selectedItem.src} 
+                      alt={selectedItem.title}
+                      className="block w-full h-auto max-h-[80vh] object-contain rounded-3xl"
+                    />
+                  </div>
+                </div>
+              )}
+              <div className="mt-4 text-center text-white px-4 pb-4">
+                <h2 className="text-lg sm:text-xl font-semibold">{selectedItem.title}</h2>
+                <p className="text-sm sm:text-base text-gray-300 mt-2">{selectedItem.description}</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </main>
   )
 }
