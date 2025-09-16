@@ -6,7 +6,7 @@ interface PropertyCardProps {
   name: string
   bedrooms: number
   bathrooms: number
-  sqft: string
+  sqm: string
   image: string
   borderColor?: string
 }
@@ -15,7 +15,7 @@ export function PropertyCard({
   name,
   bedrooms,
   bathrooms,
-  sqft,
+  sqm,
   image,
   borderColor = "border-black", // Default to black border
 }: PropertyCardProps) {
@@ -41,7 +41,7 @@ export function PropertyCard({
 
         <div className="flex justify-center items-center gap-1 text-muted-foreground text-sm group-hover:text-primary transition-colors duration-300">
           <Square className="w-3 h-3 sm:w-4 sm:h-4" />
-          <span>{sqft} sqft</span>
+          <span>{sqm} sqm</span>
         </div>
 
       </CardContent>
