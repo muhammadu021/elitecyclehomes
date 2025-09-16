@@ -454,7 +454,7 @@ export default function GalleryPage() {
 
         {/* Modal for Full View */}
         {selectedItem && (
-          <div className="fixed inset-0 bg-gray-200/60 backdrop-blur-sm z-50 flex items-start justify-center p-4 pt-16 sm:pt-20">
+          <div className="fixed inset-0 bg-gray-200/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 pt-16 sm:pt-20">
               <button 
                 onClick={(e) => {
                   e.stopPropagation()
@@ -475,7 +475,7 @@ export default function GalleryPage() {
                     <video
                       ref={videoRef}
                       src={selectedItem.src}
-                      className="no-controls block w-full h-auto max-h-[80vh] object-contain rounded-3xl"
+                      className="no-controls block w-full h-auto max-h-[70vh] object-contain rounded-3xl"
                       playsInline
                       autoPlay
                       muted={false}
@@ -490,7 +490,7 @@ export default function GalleryPage() {
                     <img 
                       src={selectedItem.src} 
                       alt={selectedItem.title}
-                      className="block w-full h-auto max-h-[80vh] object-contain rounded-3xl"
+                      className="block w-full h-auto max-h-[70vh] object-contain rounded-3xl"
                     />
                   </div>
                 </div>

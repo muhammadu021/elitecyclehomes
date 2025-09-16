@@ -277,7 +277,7 @@ export function GallerySection() {
 
       {/* Modal for Full View */}
       {selectedItem && (
-        <div className="fixed inset-0 bg-gray-200/60 backdrop-blur-sm z-50 flex items-start justify-center p-4 pt-16 sm:pt-20">
+        <div className="fixed inset-0 bg-gray-200/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 pt-16 sm:pt-20">
           <button 
             onClick={closeModal}
             className="absolute top-6 right-6 z-50 w-12 h-12 flex items-center justify-center bg-black/50 rounded-full text-white hover:bg-black/70 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
@@ -293,7 +293,7 @@ export function GallerySection() {
                   <video
                     ref={videoRef}
                     src={selectedItem.src}
-                    className="no-controls block w-full h-auto max-h-[80vh] object-contain rounded-3xl"
+                    className="no-controls block w-full h-auto max-h-[70vh] object-contain rounded-3xl"
                     playsInline
                     autoPlay
                     muted={false}
@@ -308,7 +308,7 @@ export function GallerySection() {
                   <img 
                     src={selectedItem.src} 
                     alt={selectedItem.title}
-                    className="block w-full h-auto max-h-[80vh] object-contain rounded-3xl"
+                    className="block w-full h-auto max-h-[70vh] object-contain rounded-3xl"
                   />
                 </div>
               </div>
