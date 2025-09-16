@@ -1,3 +1,4 @@
+import { SquareM } from "lucide-react"
 import { PropertyCard } from "./property-card"
 
 export function PropertiesSection() {
@@ -6,7 +7,7 @@ export function PropertiesSection() {
       name: "Luxury Villa Katampe Extension Amina Sale Crescent",
       bedrooms: 5,
       bathrooms: 6,
-      sqft: "500",
+      sqm: 500,
       image: "/1.jpg",
       borderColor: "border-orange-500",
     },
@@ -14,7 +15,7 @@ export function PropertiesSection() {
       name: "Fully Detached Duplex Katampe Extension Hill Top",
       bedrooms: 3,
       bathrooms: 4,
-      sqft: "2,800",
+      sqm: 500,
       image: "/17.jpg",
       borderColor: "border-green-500",
     },
@@ -22,7 +23,7 @@ export function PropertiesSection() {
       name: "Mansion Katampe Extension",
       bedrooms: 4,
       bathrooms: 5,
-      sqft: "3,200",
+      sqm: 500,
       image: "/3.jpg",
       borderColor: "border-purple-500",
     },
@@ -30,7 +31,7 @@ export function PropertiesSection() {
       name: "Executive Apartment Katampe Extension Hill Top",
       bedrooms: 4,
       bathrooms: 5,
-      sqft: "3,800",
+      sqm: 500,
       image: "/9.jpg",
       borderColor: "border-blue-500",
     },
@@ -38,7 +39,7 @@ export function PropertiesSection() {
       name: "Fully Detached Duplex Karsana",
       bedrooms: 6,
       bathrooms: 7,
-      sqft: "6,000",
+      sqm: 500,
       image: "/11.jpg",
       borderColor: "border-teal-500",
     },
@@ -46,7 +47,7 @@ export function PropertiesSection() {
       name: "Terrace Duplex Idu",
       bedrooms: 3,
       bathrooms: 4,
-      sqft: "2,500",
+      sqm: 500,
       image: "/Terraces.jpg",
       borderColor: "border-red-500",
     },

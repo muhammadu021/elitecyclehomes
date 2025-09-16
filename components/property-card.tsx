@@ -6,7 +6,7 @@ interface PropertyCardProps {
   name: string
   bedrooms: number
   bathrooms: number
-  sqm: string
+  sqm: number
   image: string
   borderColor?: string
 }
@@ -39,9 +39,14 @@ export function PropertyCard({
           </h3>
         </div>
 
-        <div className="flex justify-center items-center gap-1 text-muted-foreground text-sm group-hover:text-primary transition-colors duration-300">
-          <Square className="w-3 h-3 sm:w-4 sm:h-4" />
-          <span>{sqm} sqm</span>
+        <div className="flex justify-center items-center gap-2 text-muted-foreground text-sm group-hover:text-primary transition-colors duration-300 whitespace-nowrap">
+          <Square className="w-3 h-3 sm:w-4 sm:h-4 opacity-80" />
+          <span aria-label={`${sqm} square meters`}>
+            <span className="font-semibold text-foreground group-hover:text-primary/90 mr-1">
+              {Number.isFinite(sqm as number) ? sqm.toLocaleString() : String(sqm)}
+            </span>
+            <span className="text-muted-foreground">sqm</span>
+          </span>
         </div>
 
       </CardContent>
