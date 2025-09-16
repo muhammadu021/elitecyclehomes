@@ -495,9 +495,9 @@ export default function GalleryPage() {
                   </div>
                 </div>
               )}
-              <div className="mt-4 text-center text-white px-4 pb-4">
+              <div className="mt-4 text-center text-black px-4 pb-4">
                 <h2 className="text-lg sm:text-xl font-semibold">{selectedItem.title}</h2>
-                <p className="text-sm sm:text-base text-gray-300 mt-2">{selectedItem.description}</p>
+                <p className="text-sm sm:text-base text-black mt-2">{selectedItem.description}</p>
               </div>
             </div>
           </div>
